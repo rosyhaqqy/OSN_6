@@ -70,5 +70,7 @@ int main() {
 }
 ```
 
+Dilansir dari referensi STL, `sort()` ini memiliki kompleksitas waktu `O(N log2(N))`
+
 Referensi:
 https://www.geeksforgeeks.org/cpp/sort-c-stl/
