@@ -1,4 +1,4 @@
-# sort()
+# sort() STL C++
 
 Di bahasa C++, sudah disediakan suatu fungsi yaitu `sort()` untuk menangani setiap pengurutan yang kita perlukan dari library `<algorithm>`. `sort()` hanya berlaku pada struktur data vector dan array.
 
@@ -69,3 +69,6 @@ int main() {
     return 0;
 }
 ```
+
+Referensi:
+https://www.geeksforgeeks.org/cpp/sort-c-stl/
