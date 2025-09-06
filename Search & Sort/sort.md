@@ -98,6 +98,94 @@ Karena setiap kali rekursi ukuran array menjadi setengahnya, maka kedalaman maks
 
 Karena di setiap tahap rekursi total proses _merge_ yang dilakukan ada sebanyak N, maka total kompleksitas pengurutan menggunakan Merge Sort adalah **N log2(N)**.
 
+Contoh program:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+// Merges two subarrays of arr[].
+// First subarray is arr[l..m]
+// Second subarray is arr[m+1..r]
+void merge(int arr[], int l, int m, int r){
+
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    // Create temp arrays
+    int L[n1], R[n2];
+
+    // Copy data to temp arrays L[] and R[]
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    // Merge the temp arrays back into arr[l..r
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    // Copy the remaining elements of L[],
+    // if there are any
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of R[],
+    // if there are any
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// l is for left index and r is right index of the
+// sub-array of arr to be sorted
+void mergeSort(int arr[], int l, int r){
+
+    if (l < r) {
+        int m = l + (r - l) / 2;
+
+        // Sort first and second halves
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+// Driver code
+int main(){
+
+    int arr[] = {38, 27, 43, 10};
+    int arr_size = sizeof(arr) / sizeof(arr[0]);
+
+    mergeSort(arr, 0, arr_size - 1);
+    int i;
+    for (i = 0; i < arr_size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+
+    return 0;
+}
+```
+
 ## Quick Sort
 
 Mirip seperti Merge Sort, **Quick Sort** adalah algoritma sorting yang dilakukan secara rekursif dan menggunakan prinsip Divide and Conquer.
@@ -140,3 +228,67 @@ Jika dirata-rata, total kompleksitas dari Quick Sort adalah **O(N log2(N))**. Me
 Merge Sort dan Quick Sort adalah algoritma _sorting_ yang paling umum dipakai karena memiliki efisiensi yang sangat baik meskipun terdapat algoritma yang lebih efisien seperti Radix Sort. Sedangkan untuk Bubble Sort dan Insertion Sort hampir tidak pernah dipakai. Algoritma tersebut sebaiknya hanya dipelajari untuk pengetahuan saja.
 
 Di antara Merge Sort dan Quick Sort, penggunaan Quick Sort sering kali lebih dipilih dikarenakan Quick Sort adalah algoritma pengurutan yang bersifat _in-place_ yang berarti tidak membutuhkan memori tambahan dalam implementasinya, tidak seperti Merge Sort yang membutuhkan memori tambahan dengan ukuran yang linear terhadap array yang akan di-_sort_.
+
+Contoh program:
+
+```c
+#include <stdio.h>
+
+void swap(int* a, int* b);
+
+// partition function
+int partition(int arr[], int low, int high) {
+
+    // Choose the pivot
+    int pivot = arr[high];
+
+    // Index of smaller element and indicates
+    // the right position of pivot found so far
+    int i = low - 1;
+
+    // Traverse arr[low..high] and move all smaller
+    // elements to the left side. Elements from low to
+    // i are smaller after every iteration
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+
+    // Move pivot after smaller elements and
+    // return its position
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+// The QuickSort function implementation
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+
+        // pi is the partition return index of pivot
+        int pi = partition(arr, low, high);
+
+        // recursion calls for smaller elements
+        // and greater or equals elements
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+}
+```
